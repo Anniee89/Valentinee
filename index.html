@@ -2,24 +2,44 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Valentine Proposal ❤️</title>
+<title>Valentine Proposal 💖</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+:root {
+    --bg1: #ff416c;
+    --bg2: #ff4b2b;
+    --text: white;
+}
+
+/* 🌙 Dark Mode */
+body.dark {
+    --bg1: #0f2027;
+    --bg2: #203a43;
+    --text: #ffffff;
+}
+
+/* 🌸 Pastel Mode */
+body.pastel {
+    --bg1: #fbc2eb;
+    --bg2: #a6c1ee;
+    --text: #2b2b2b;
+}
+
 body {
     margin: 0;
     height: 100vh;
     overflow: hidden;
     font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    background: linear-gradient(135deg, var(--bg1), var(--bg2));
     display: flex;
     justify-content: center;
     align-items: center;
+    color: var(--text);
 }
 
 .container {
     text-align: center;
-    color: white;
     z-index: 2;
     padding: 20px;
 }
@@ -50,6 +70,7 @@ button {
     position: absolute;
 }
 
+/* 💡 Hint */
 .hint {
     position: fixed;
     bottom: 18px;
@@ -58,39 +79,82 @@ button {
     font-size: 0.9em;
     opacity: 0.85;
     font-style: italic;
-    text-align: center;
 }
 
+/* 💕 Floating Hearts */
+.floating-heart {
+    position: fixed;
+    bottom: -20px;
+    font-size: 20px;
+    animation: float 8s linear infinite;
+    opacity: 0.8;
+}
+
+@keyframes float {
+    0% { transform: translateY(0) scale(1); }
+    100% { transform: translateY(-110vh) scale(1.5); }
+}
+
+/* 💥 Heart Explosion */
 .heart {
     position: fixed;
     font-size: 22px;
     pointer-events: none;
-    animation: floatUp 4s linear forwards;
+    animation: burst 4s linear forwards;
 }
 
-@keyframes floatUp {
-    0% { transform: translateY(0) scale(1); opacity: 1; }
-    100% { transform: translateY(-220px) scale(1.5); opacity: 0; }
+@keyframes burst {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(2) translateY(-200px); opacity: 0; }
 }
 
+/* 💍 Ring */
+.ring {
+    font-size: 90px;
+    animation: ringPop 1.5s ease-out forwards;
+}
+
+@keyframes ringPop {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* 🎆 Fireworks */
 canvas {
     position: fixed;
     top: 0;
     left: 0;
     pointer-events: none;
 }
+
+/* 🎛 Mode Toggle */
+.mode-switch {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+}
+
+.mode-switch button {
+    padding: 8px 14px;
+    font-size: 14px;
+    margin-left: 5px;
+}
 </style>
 </head>
 
-<body>
+<body class="dark">
 
 <!-- 🎵 Music -->
 <audio id="music" loop>
-    <!-- Replace with your Drive direct link or mp3 -->
     <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-13.mp3" type="audio/mpeg">
 </audio>
 
 <canvas id="fireworks"></canvas>
+
+<div class="mode-switch">
+    <button onclick="setMode('dark')">🌙 Dark</button>
+    <button onclick="setMode('pastel')">🌸 Pastel</button>
+</div>
 
 <div class="container" id="main">
     <h1>Will you be my Valentine? 💕</h1>
@@ -101,41 +165,48 @@ canvas {
 <div class="hint">Hint: The NO button is shy by nature 😉</div>
 
 <script>
+/* 🏃 NO button */
 const noBtn = document.getElementById("no");
 noBtn.addEventListener("mouseover", moveNo);
 noBtn.addEventListener("touchstart", moveNo);
 
 function moveNo() {
-    const x = Math.random() * (window.innerWidth - 120);
-    const y = Math.random() * (window.innerHeight - 80);
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
+    noBtn.style.left = Math.random() * (window.innerWidth - 120) + "px";
+    noBtn.style.top = Math.random() * (window.innerHeight - 80) + "px";
 }
 
+/* 💕 Floating Hearts Generator */
+setInterval(() => {
+    const h = document.createElement("div");
+    h.className = "floating-heart";
+    h.innerHTML = "❤️";
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.animationDuration = (Math.random() * 4 + 6) + "s";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 9000);
+}, 500);
+
+/* 💥 Heart Explosion */
 function heartExplosion(x, y) {
-    for (let i = 0; i < 35; i++) {
+    for (let i = 0; i < 30; i++) {
         const heart = document.createElement("div");
         heart.className = "heart";
         heart.innerHTML = "❤️";
         heart.style.left = x + "px";
         heart.style.top = y + "px";
-        heart.style.fontSize = (Math.random() * 20 + 15) + "px";
         document.body.appendChild(heart);
         setTimeout(() => heart.remove(), 4000);
     }
 }
 
-function typeWriter(text, element, speed = 60) {
+/* ✍️ Typewriter */
+function typeWriter(text, el, speed = 60) {
     let i = 0;
     const formatted = text.replace(/\n/g, "<br>");
-    function typing() {
-        element.innerHTML = formatted.substring(0, i);
-        i++;
-        if (i <= formatted.length) {
-            setTimeout(typing, speed);
-        }
-    }
-    typing();
+    (function typing() {
+        el.innerHTML = formatted.substring(0, i++);
+        if (i <= formatted.length) setTimeout(typing, speed);
+    })();
 }
 
 /* 🎆 Fireworks */
@@ -143,39 +214,36 @@ const canvas = document.getElementById("fireworks");
 const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-
 let fireworks = [];
 
 function createFirework() {
-    fireworks.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height / 2,
-        r: 0,
-        alpha: 1
-    });
+    fireworks.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height/2, r:0, a:1});
 }
 
 function drawFireworks() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    fireworks.forEach((f, i) => {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    fireworks.forEach((f,i)=>{
         ctx.beginPath();
-        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, ${Math.random()*200}, ${Math.random()*200}, ${f.alpha})`;
+        ctx.arc(f.x,f.y,f.r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(255,200,200,${f.a})`;
         ctx.fill();
-        f.r += 3;
-        f.alpha -= 0.02;
-        if (f.alpha <= 0) fireworks.splice(i, 1);
+        f.r+=3; f.a-=0.02;
+        if(f.a<=0) fireworks.splice(i,1);
     });
     requestAnimationFrame(drawFireworks);
 }
 
+/* 💍 YES Click */
 function yesClicked() {
     document.getElementById("music").play();
-    heartExplosion(window.innerWidth / 2, window.innerHeight / 2);
+    heartExplosion(innerWidth/2, innerHeight/2);
     setInterval(createFirework, 400);
     drawFireworks();
 
-    document.getElementById("main").innerHTML = `<h1 id="msg"></h1>`;
+    document.getElementById("main").innerHTML = `
+        <div class="ring">💍</div>
+        <h1 id="msg"></h1>
+    `;
 
     const message =
         "You just made my heart smile ❤️\n\n" +
@@ -184,6 +252,11 @@ function yesClicked() {
         "Happy Valentine’s Day 💕";
 
     typeWriter(message, document.getElementById("msg"), 65);
+}
+
+/* 🌙 / 🌸 Mode Switch */
+function setMode(mode) {
+    document.body.className = mode;
 }
 </script>
 
