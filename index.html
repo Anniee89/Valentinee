@@ -1,137 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Valentine Proposal ❤️</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Valentine Proposal ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #ff758c, #ff7eb3);
-            font-family: 'Segoe UI', sans-serif;
-        }
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        overflow: hidden;
+        font-family: 'Segoe UI', sans-serif;
+        background:
+            linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+            url("https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e");
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-        .container {
-            text-align: center;
-            z-index: 2;
-            padding: 20px;
-        }
+    .container {
+        text-align: center;
+        color: white;
+        z-index: 2;
+        padding: 20px;
+    }
 
-        h1 {
-            color: #fff;
-            font-size: 2em;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-        }
+    h1 {
+        font-size: 2.2em;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
+    }
 
-        button {
-            padding: 15px 28px;
-            font-size: 18px;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            margin: 10px;
-        }
+    .hint {
+        font-size: 0.9em;
+        opacity: 0.85;
+        margin-bottom: 25px;
+        font-style: italic;
+    }
 
-        #yes {
-            background: #ff1744;
-            color: white;
-        }
+    button {
+        padding: 15px 30px;
+        font-size: 18px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        margin: 10px;
+    }
 
-        #no {
-            background: #444;
-            color: white;
-            position: absolute;
-        }
+    #yes {
+        background: #ff1744;
+        color: white;
+    }
 
-        /* Heart animation */
-        .heart {
-            position: fixed;
-            bottom: -20px;
-            font-size: 20px;
-            animation: floatUp 6s linear infinite;
-            opacity: 0.8;
-        }
+    #no {
+        background: #444;
+        color: white;
+        position: absolute;
+    }
 
-        @keyframes floatUp {
-            0% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh);
-                opacity: 0;
-            }
-        }
-    </style>
+    .heart {
+        position: fixed;
+        color: red;
+        font-size: 20px;
+        pointer-events: none;
+        animation: floatUp 4s linear forwards;
+    }
+
+    @keyframes floatUp {
+        0% { transform: translateY(0) scale(1); opacity: 1; }
+        100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
+    }
+
+    canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+    }
+</style>
 </head>
+
 <body>
 
-<!-- Background Music -->
-<audio id="music" autoplay loop>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+<!-- 🎵 Romantic Song -->
+<audio id="music" loop>
+    <!-- Replace with your own romantic MP3 -->
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-13.mp3" type="audio/mpeg">
 </audio>
 
-<div class="container">
-    <h1>Prakriti, will you be my Valentine? ❤️</h1>
-    <button id="yes" onclick="yesClicked()">Yes 💕</button>
-    <button id="no">No 😜</button>
+<canvas id="fireworks"></canvas>
+
+<div class="container" id="main">
+    <h1>
+        Will you be my Valentine? 💕
+    </h1>
+
+    <div class="hint">Hint: The NO button is shy by nature 😉</div>
+
+    <button id="yes" onclick="yesClicked()">YES ❤️</button>
+    <button id="no">NO 😜</button>
 </div>
 
 <script>
-    // Move NO button
-    const noBtn = document.getElementById("no");
+const noBtn = document.getElementById("no");
+noBtn.addEventListener("mouseover", moveNo);
+noBtn.addEventListener("touchstart", moveNo);
 
-    function moveNo() {
-        const x = Math.random() * (window.innerWidth - 100);
-        const y = Math.random() * (window.innerHeight - 50);
-        noBtn.style.left = x + "px";
-        noBtn.style.top = y + "px";
-    }
+function moveNo() {
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 50);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
 
-    noBtn.addEventListener("mouseover", moveNo);
-    noBtn.addEventListener("touchstart", moveNo);
-
-    // YES clicked
-    function yesClicked() {
-        document.body.innerHTML = `
-            <div style="
-                display:flex;
-                justify-content:center;
-                align-items:center;
-                height:100vh;
-                background:linear-gradient(135deg,#ff758c,#ff7eb3);
-                text-align:center;
-                color:white;
-                font-size:2.5em;
-            ">
-                💖 Yay Prakriti! You are my Valentine 🌹💖
-            </div>
-        `;
-    }
-
-    // Create floating hearts
-    function createHeart() {
+function heartExplosion(x, y) {
+    for (let i = 0; i < 35; i++) {
         const heart = document.createElement("div");
-        heart.classList.add("heart");
+        heart.className = "heart";
         heart.innerHTML = "❤️";
-        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.left = x + "px";
+        heart.style.top = y + "px";
         heart.style.fontSize = (Math.random() * 20 + 15) + "px";
-        heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
         document.body.appendChild(heart);
-
-        setTimeout(() => {
-            heart.remove();
-        }, 6000);
+        setTimeout(() => heart.remove(), 4000);
     }
+}
 
-    setInterval(createHeart, 300);
+function typeWriter(text, element, speed = 70) {
+    let i = 0;
+    function typing() {
+        if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typing, speed);
+        }
+    }
+    typing();
+}
+
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let fireworks = [];
+
+function createFirework() {
+    fireworks.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height / 2,
+        r: 0,
+        alpha: 1
+    });
+}
+
+function drawFireworks() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    fireworks.forEach((f, i) => {
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, ${Math.random()*200}, ${Math.random()*200}, ${f.alpha})`;
+        ctx.fill();
+        f.r += 3;
+        f.alpha -= 0.02;
+        if (f.alpha <= 0) fireworks.splice(i, 1);
+    });
+    requestAnimationFrame(drawFireworks);
+}
+
+function yesClicked() {
+    document.getElementById("music").play();
+    heartExplosion(window.innerWidth/2, window.innerHeight/2);
+    setInterval(createFirework, 400);
+    drawFireworks();
+
+    document.getElementById("main").innerHTML = `<h1 id="msg"></h1>`;
+
+    const message =
+        "You just made my heart smile ❤️\n\n" +
+        "From this moment, every day feels special,\n" +
+        "because love feels better when it's with you 🌹\n\n" +
+        "Happy Valentine’s Day 💕";
+
+    function typeWriter(text, element, speed = 70) {
+    let i = 0;
+    let formatted = text.replace(/\n/g, "<br>");
+
+    function typing() {
+        element.innerHTML = formatted.substring(0, i);
+        i++;
+        if (i <= formatted.length) {
+            setTimeout(typing, speed);
+        }
+    }
+    typing();
+}
+}
 </script>
 
 </body>
