@@ -35,10 +35,18 @@
     }
 
     .hint {
-        font-size: 0.9em;
-        opacity: 0.85;
-        margin-bottom: 25px;
-        font-style: italic;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.9em;
+    opacity: 0.85;
+    font-style: italic;
+    color: white;
+    text-align: center;
+    z-index: 3;
+}
+
     }
 
     button {
@@ -98,7 +106,7 @@
         Will you be my Valentine? 💕
     </h1>
 
-    <div class="hint">Hint: The NO button is shy by nature 😉</div>
+<div class="hint">Hint: The NO button is shy by nature 😉</div>
 
     <button id="yes" onclick="yesClicked()">YES ❤️</button>
     <button id="no">NO 😜</button>
