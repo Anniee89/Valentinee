@@ -180,8 +180,12 @@ function drawFireworks() {
 }
 
 function yesClicked() {
-    document.getElementById("music").play();
-    heartExplosion(window.innerWidth/2, window.innerHeight/2);
+   <script>
+function yesClicked() {
+    const music = document.getElementById("music");
+    music.play();
+
+    heartExplosion(window.innerWidth / 2, window.innerHeight / 2);
     setInterval(createFirework, 400);
     drawFireworks();
 
@@ -193,9 +197,13 @@ function yesClicked() {
         "because love feels better when it's with you 🌹\n\n" +
         "Happy Valentine’s Day 💕";
 
-    function typeWriter(text, element, speed = 70) {
+    const msgEl = document.getElementById("msg");
+    typeWriter(message, msgEl, 70);
+}
+
+function typeWriter(text, element, speed = 70) {
     let i = 0;
-    let formatted = text.replace(/\n/g, "<br>");
+    const formatted = text.replace(/\n/g, "<br>");
 
     function typing() {
         element.innerHTML = formatted.substring(0, i);
@@ -206,6 +214,8 @@ function yesClicked() {
     }
     typing();
 }
+</script>
+
 }
 </script>
 
